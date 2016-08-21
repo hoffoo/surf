@@ -1,0 +1,4 @@
+1198c1198
+< 		prisel = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
+---
+> 		prisel = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
