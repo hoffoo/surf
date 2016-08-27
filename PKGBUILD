@@ -17,15 +17,11 @@ provides=("$_pkgname")
 conflicts=("$_pkgname")
 source=("$_pkgname::git+http://git.suckless.org/surf"
         'config.h'
-        'http://surf.suckless.org/patches/surf-0.6-homepage.diff'
-        'change_clipboard.diff'
-        'homepage_on_blank_url.diff'
+        'patches.diff'
         )
 md5sums=('SKIP'
          'SKIP'
-         '8fd342cae180ba787248fbf54da52529'
-         'a50bd6b6adedbed8f7e3c60bde417af4'
-         'd4bc778f46104177963af2f04e903f47'
+         'SKIP'
          )
 
 pkgver() {
@@ -35,9 +31,7 @@ pkgver() {
 
 prepare() {
   cd "$_pkgname"
-  patch -i $srcdir/surf-0.6-homepage.diff
-  patch -i $srcdir/change_clipboard.diff surf.c
-  patch -i $srcdir/homepage_on_blank_url.diff surf.c
+  patch -i $srcdir/patches.diff
 }
 
 build() {

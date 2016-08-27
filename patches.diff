@@ -1,0 +1,48 @@
+diff --git a/config.def.h b/config.def.h
+index 7c2b10f..759a9d4 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -35,6 +35,7 @@ static Bool loadimages            = TRUE;
+ static Bool hidebackground        = FALSE;
+ static Bool allowgeolocation      = TRUE;
+ 
++#define HOMEPAGE "https://www.duckduckgo.com/"
+ #define SETPROP(p, q) { \
+ 	.v = (char *[]){ "/bin/sh", "-c", \
+ 	     "prop=\"`xprop -id $2 $0 " \
+diff --git a/surf.c b/surf.c
+index 46aef68..1c83e5f 100644
+--- a/surf.c
++++ b/surf.c
+@@ -1194,10 +1194,7 @@ menuactivate(GtkMenuItem *item, Client *c)
+ 		return;
+ 
+ 	name = gtk_action_get_name(a);
+-	if (!g_strcmp0(name, "context-menu-action-3")) {
+-		prisel = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
+-		gtk_clipboard_set_text(prisel, c->linkhover, -1);
+-	} else if (!g_strcmp0(name, "context-menu-action-7")) {
++	if (!g_strcmp0(name, "context-menu-action-3") || !g_strcmp0(name, "context-menu-action-7")) {
+ 		prisel = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
+ 		clpbrd = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+ 		uri = gtk_clipboard_wait_for_text(clpbrd);
+@@ -1236,6 +1233,9 @@ processx(GdkXEvent *e, GdkEvent *event, gpointer d)
+ 				return GDK_FILTER_REMOVE;
+ 			} else if (ev->atom == atoms[AtomGo]) {
+ 				arg.v = getatom(c, AtomGo);
++                char *cur = geturi(c);
++                if (strcmp(cur, arg.v) == 0)
++                    arg.v = HOMEPAGE;
+ 				loaduri(c, &arg);
+ 				return GDK_FILTER_REMOVE;
+ 			}
+@@ -1802,6 +1802,9 @@ main(int argc, char *argv[])
+ 	default:
+ 		usage();
+ 	} ARGEND;
++	#ifdef HOMEPAGE
++		arg.v = HOMEPAGE;
++	#endif
+ 	if (argc > 0)
+ 		arg.v = argv[0];
+ 

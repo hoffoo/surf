@@ -1,5 +1,0 @@
-1238a1239,1241
->                 char *cur = geturi(c);
->                 if (strcmp(cur, arg.v) == 0)
->                     arg.v = HOMEPAGE;
-
